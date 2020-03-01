@@ -171,7 +171,7 @@ df = [ [error_h01[start:,0],np.log(Values_all[:,0,start:].mean(axis=0))],
        [error_h01_bis[start:,0],np.log(Values_all[:,1,start:].mean(axis=0))],
        [error_h07[start:,0],np.log(Values_all[:,2,start:].mean(axis=0))],
        [error_h011[start:,0],np.log(Values_all[:,3,start:].mean(axis=0))]]
-labels = ["ste_cste", "1/n", "SAGA","PASS"]
+labels = ["step_cste", "1/n", "SAGA","PASS"]
 mark = ['o', 'o', '*','<']
 bbox_to_anchor_0 = (0.7,.75)
 fig = plt.figure(figsize=(8,5))

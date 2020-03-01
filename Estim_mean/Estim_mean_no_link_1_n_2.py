@@ -51,6 +51,7 @@ def Plot_plot(df,labels,option=False,path ="",ImageName="",xtitle="", xlabel =""
     if option == "save" :
         plt.savefig(path+ImageName+".pdf", bbox_inches='tight') 
         
+        
 ###############################################################################
 ###############################################################################
 ########################################## Start functions ####################
@@ -93,10 +94,6 @@ def Loop_super1_bis(nb_episode,pdic,gamma= 0.2,s_value=0,freq_print=100,Error=No
     mean_reward = np.zeros((size_mean,2))
     mean_error_estim = np.zeros((size_mean,2))
     gamma_0 = float(gamma)
-    ### Parameters ; upper level 
-    h_0_before = np.array(h_0)
-    h_0_past_before = np.array(h_0_past)
-    count_period =0
     for ep in range(nb_episode):
         nb_init_0 = max((1 + ep)*0.4,1)
         h_0,h_0_past,error_val = Loop1_bis(h_0,h_0_past,pdic,gamma= gamma_0,s_value=s_value,Error=Error, nb_init = nb_init_0, nb_iter = nb_iter)
@@ -107,23 +104,10 @@ def Loop_super1_bis(nb_episode,pdic,gamma= 0.2,s_value=0,freq_print=100,Error=No
             if print_option:
                 print(" frequency is : " + str(ep))
             mean_reward[count_reward] = (count_reward*freq_print,error_within.mean())
-            mean_error_estim[count_reward] = (count_reward*freq_print,error_within_estim.mean())
-            ## update gamma :
-            index_count_before = max(count_reward-1,0)
-            pctg_last = ((mean_error_estim[index_count_before,1] - mean_error_estim[count_reward,1])/mean_error_estim[index_count_before,1])
-            if (pctg_last <= pctg_0) and (count_reward >= 1):
-                h_0 = np.array(h_0_before)
-                h_0_past = np.array(h_0_past_before)                
-                if (count_period >= 3):
-                    gamma_0 = max(gamma_0/2,0.01) # count_gamma_0 = 1
-                    count_period = 0
-            else : 
-                h_0_before = np.array(h_0)
-                h_0_past_before = np.array(h_0_past)               
+            mean_error_estim[count_reward] = (count_reward*freq_print,error_within_estim.mean())              
             error_within[:] = 0
             count_within = 0
             count_reward += 1
-            count_period += 1
     if (count_within==0):
         return  [h_0,h_0_past,mean_reward]
     else:
