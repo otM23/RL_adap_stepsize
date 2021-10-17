@@ -9,12 +9,10 @@ Created on Mon Feb 25 16:53:02 2019
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import axes3d
 
 
-## Plot 3d
 def Plot3D(Resx,Resy,Resz,bins,xlabel='Ask size',ylabel='Bid size',zlabel='Joint distribution',option="save",path ="",ImageName="",xtitle="",
-            elev0= 30, azim0=40, dist0= 12,optionXY =1,figsize_ = (8,11) ):
+            elev0= 30, azim0=40, dist0= 12,optionXY =1,figsize_ = (8,11), x_tickslabels =  False, x_ticksvalues = np.zeros(1) ):
     if type(bins) == int:
         bins = [bins,bins]
     xpos1 = np.zeros(bins[0]*bins[1])
@@ -37,6 +35,9 @@ def Plot3D(Resx,Resy,Resz,bins,xlabel='Ask size',ylabel='Bid size',zlabel='Joint
     ax = fig.add_subplot(111, projection='3d')
     ax.view_init(elev= elev0,azim=azim0)
     ax.dist=dist0  
+    if x_tickslabels:
+        ticks_values = tuple([np.format_float_scientific(elt, unique=False, precision=2) for elt in x_ticksvalues])
+        ax.set_xticklabels(list(ticks_values))
     ax.plot_trisurf(xpos1, ypos1, zpos1, linewidth=0.2, antialiased=True,
                     cmap=plt.cm.rainbow)
     ax.set_xlabel(xlabel)
@@ -49,7 +50,6 @@ def Plot3D(Resx,Resy,Resz,bins,xlabel='Ask size',ylabel='Bid size',zlabel='Joint
     plt.show()
 
 #### PLot 2d values :
-
 def Plot_plot(df,labels,option=False,path ="",ImageName="",xtitle="", xlabel ="", ylabel ="", fig = False, a = 0, b = 0, subplot0 = 0, linewidth= 3.0, Nset_tick_x = True, xlim_val = None, ylim_val = None,mark = None, col = 'blue',marksize=12, bbox_to_anchor_0 = (0.7,.95)):
     if mark is None:
         mark = ['o']*(len(df))
